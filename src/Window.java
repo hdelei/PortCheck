@@ -1,11 +1,5 @@
 
-import java.awt.Color;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -41,6 +35,8 @@ public class Window extends javax.swing.JFrame {
         txtPort = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        txtReturnedIP = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("VM Check Ports");
@@ -53,15 +49,31 @@ public class Window extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel1.setText("Status da porta");
+        jLabel1.setText("Port status");
 
         txtIP.setText("google.com");
+        txtIP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIPKeyReleased(evt);
+            }
+        });
 
         txtPort.setText("80");
+        txtPort.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPortKeyReleased(evt);
+            }
+        });
 
-        jLabel2.setText("Endereço");
+        jLabel2.setText("Hostname or IP");
 
-        jLabel3.setText("Porta");
+        jLabel3.setText("Port");
+
+        txtReturnedIP.setEditable(false);
+        txtReturnedIP.setBackground(new java.awt.Color(102, 102, 102));
+        txtReturnedIP.setForeground(new java.awt.Color(204, 204, 204));
+
+        jLabel4.setText("Returned IP");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,18 +82,19 @@ public class Window extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 33, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(96, 96, 96)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtIP, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel4)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtIP, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
+                                .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtReturnedIP, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -95,11 +108,15 @@ public class Window extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtReturnedIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addGap(40, 40, 40))
         );
 
         pack();
@@ -108,39 +125,19 @@ public class Window extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
-        
-        String ip = txtIP.getText();
-        
-        try {
-            InetAddress address; 
-            address = InetAddress.getByName("veneza.no-ip.org");
-            ip = address.getHostAddress();
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        System.out.println(ip);
-        int port = Integer.parseInt(txtPort.getText());
-        int timeout = 200;
-        
-        boolean isopen;
-        
-        isopen = portIsOpen(ip, port, timeout);
-        
-        jLabel1.setText("Status");
-        jLabel1.setForeground(Color.BLACK);
-        
-        jLabel1.setText((isopen == true)? "Porta aberta" : "Porta fechada");
-        
-        if (isopen) {
-            Color color = new Color(0,100,0);
-            jLabel1.setForeground(color);
-        }
-        else{
-            jLabel1.setForeground(Color.red);   
-        }
-        
+        runCheckPort();        
+                
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtIPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIPKeyReleased
+        // TODO add your handling code here:
+        jLabel1.setText("Port status");
+    }//GEN-LAST:event_txtIPKeyReleased
+
+    private void txtPortKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPortKeyReleased
+        // TODO add your handling code here:
+        jLabel1.setText("Port status");
+    }//GEN-LAST:event_txtPortKeyReleased
 
     /**
      * @param args the command line arguments
@@ -182,19 +179,46 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtIP;
     private javax.swing.JTextField txtPort;
+    private javax.swing.JTextField txtReturnedIP;
     // End of variables declaration//GEN-END:variables
 
-    
-    public boolean portIsOpen(String ip, int port, int timeout) {
-        try {
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(ip, port), timeout);
-            socket.close();
-            return true;
-        } catch (Exception ex) {
-            return false;
+    private int portValidate(String port){        
+        
+        if (StringUtils.isNumeric(port)) {
+            return Integer.parseInt(port);
+        }
+        else {
+            txtPort.setText("invalid!");
+            return 0;
         }
     }
+    private void runCheckPort() {
+        String ip = txtIP.getText();
+        int port = portValidate(txtPort.getText());
+        
+        
+        boolean portIsOpen, isValidIP;
+        
+        AddressHandle myCheck = new AddressHandle(ip, port);
+        portIsOpen = myCheck.portIsOpen();
+        isValidIP = myCheck.IsValidIP();
+        
+        if(portIsOpen){
+            jLabel1.setText("Port is open");            
+        }
+        else if(!portIsOpen && !isValidIP){
+            jLabel1.setText("Invalid address or port");
+        }
+        else{
+            jLabel1.setText("Port is closed");
+        }
+        
+        txtReturnedIP.setText(myCheck.getIP());
+    }
+
+    
+    
 }
