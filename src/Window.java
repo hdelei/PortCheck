@@ -1,5 +1,4 @@
 
-import org.apache.commons.lang3.StringUtils;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -95,12 +94,12 @@ public class Window extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtReturnedIP, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
@@ -116,7 +115,7 @@ public class Window extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addGap(40, 40, 40))
+                .addGap(25, 25, 25))
         );
 
         pack();
@@ -185,15 +184,24 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JTextField txtReturnedIP;
     // End of variables declaration//GEN-END:variables
 
-    private int portValidate(String port){        
-        
-        if (StringUtils.isNumeric(port)) {
-            return Integer.parseInt(port);
+    private int portValidate(String port){    
+        int _port = 0;
+        if (port.matches("^[0-9]+$")) {
+            _port = Integer.parseInt(port);            
         }
-        else {
+        else{
             txtPort.setText("invalid!");
-            return 0;
+            txtPort.requestFocus();
         }
+        return _port;
+        
+//        if (StringUtils.isNumeric(port)) {
+//            return Integer.parseInt(port);
+//        }
+//        else {
+//            txtPort.setText("invalid!");
+//            return 0;
+//        }
     }
     private void runCheckPort() {
         String ip = txtIP.getText();
