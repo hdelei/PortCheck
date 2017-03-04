@@ -1,5 +1,8 @@
 
 import java.awt.Color;
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.awt.Toolkit;
 
 
 
@@ -20,7 +23,9 @@ public class Window extends javax.swing.JFrame {
      */
     public Window() {
         initComponents();
+        //setIcon();
         this.getContentPane().setBackground(new Color(109, 4, 152));
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -44,6 +49,8 @@ public class Window extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("VM Check Ports");
         setBackground(new java.awt.Color(109, 4, 152));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(Window.class.getResource("img/rj45.png")));
+        setResizable(false);
 
         jButton1.setText("Check");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -134,10 +141,9 @@ public class Window extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        
-        runCheckPort();        
-                
+        //Chama em nova thread para permitir bloquear o botão
+        //enquanto a tarefa não termina
+        new Thread(this::runCheckPort).start();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtIPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIPKeyReleased
@@ -215,10 +221,13 @@ public class Window extends javax.swing.JFrame {
 //            return 0;
 //        }
     }
+    
     private void runCheckPort() {
-        String ip = txtIP.getText();
-        int port = portValidate(txtPort.getText());
+        jButton1.setText("Checking...");
+        jButton1.setEnabled(false);
         
+        String ip = txtIP.getText();
+        int port = portValidate(txtPort.getText());        
         
         boolean portIsOpen, isValidIP;
         
@@ -237,8 +246,8 @@ public class Window extends javax.swing.JFrame {
         }
         
         txtReturnedIP.setText(myCheck.getIP());
+        jButton1.setText("Check");
+        jButton1.setEnabled(true);
     }
-
-    
     
 }
