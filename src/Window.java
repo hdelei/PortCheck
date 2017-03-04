@@ -1,4 +1,7 @@
 
+import java.awt.Color;
+
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,6 +20,7 @@ public class Window extends javax.swing.JFrame {
      */
     public Window() {
         initComponents();
+        this.getContentPane().setBackground(new Color(109, 4, 152));
     }
 
     /**
@@ -39,6 +43,7 @@ public class Window extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("VM Check Ports");
+        setBackground(new java.awt.Color(109, 4, 152));
 
         jButton1.setText("Check");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -48,6 +53,7 @@ public class Window extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Port status");
 
         txtIP.setText("google.com");
@@ -64,14 +70,20 @@ public class Window extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 102));
         jLabel2.setText("Hostname or IP");
 
+        jLabel3.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 102));
         jLabel3.setText("Port");
 
         txtReturnedIP.setEditable(false);
         txtReturnedIP.setBackground(new java.awt.Color(102, 102, 102));
         txtReturnedIP.setForeground(new java.awt.Color(204, 204, 204));
 
+        jLabel4.setFont(new java.awt.Font("Verdana", 1, 11)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 102));
         jLabel4.setText("Returned IP");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -215,13 +227,13 @@ public class Window extends javax.swing.JFrame {
         isValidIP = myCheck.IsValidIP();
         
         if(portIsOpen){
-            jLabel1.setText("Port is open");            
+            jLabel1.setText("Port "+ port +" is open");            
         }
         else if(!portIsOpen && !isValidIP){
             jLabel1.setText("Invalid address or port");
         }
         else{
-            jLabel1.setText("Port is closed");
+            jLabel1.setText("Port " + port +  " is closed");
         }
         
         txtReturnedIP.setText(myCheck.getIP());
