@@ -35,8 +35,7 @@ public class Window extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);        
         
         icons = img.getList();
-        this.setIconImages(icons);
-        
+        this.setIconImages(icons);        
        
     }
 
@@ -154,11 +153,7 @@ public class Window extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //Image image = Toolkit.getDefaultToolkit().getImage("src/img/rj45-0.png");
         
-        
-        //jLabel5.setIcon(imageicon);
-        //jLabel5.repaint();
         //Chama em nova thread para permitir bloquear o botão
         //enquanto a tarefa não termina
         new Thread(this::runCheckPort).start();

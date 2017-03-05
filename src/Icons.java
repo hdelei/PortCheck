@@ -12,11 +12,16 @@ import javax.swing.ImageIcon;
 /**
  *
  * @author vanderlei
+ * 
  */
 public class Icons {
     
     private ArrayList<Image> list = new ArrayList<>();     
-     
+   
+    /**
+     * 
+     * @return retorna uma lista de objetos Image
+     */
     public ArrayList<Image> getList(){
         for(ImageIcon icon : getIcons()){
             list.add(icon.getImage());
@@ -25,6 +30,10 @@ public class Icons {
         return list;
     }
      
+    /**
+     * 
+     * @return retorna uma lista obejtos ImageIcon 
+     */
     private ArrayList<ImageIcon> getIcons(){
         ArrayList<ImageIcon> aux = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
