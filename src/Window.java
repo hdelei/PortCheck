@@ -162,11 +162,14 @@ public class Window extends javax.swing.JFrame {
     private void txtIPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIPKeyReleased
         // TODO add your handling code here:
         jLabel1.setText("Port status");
+        
     }//GEN-LAST:event_txtIPKeyReleased
 
     private void txtPortKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPortKeyReleased
         // TODO add your handling code here:
         jLabel1.setText("Port status");
+        
+        
     }//GEN-LAST:event_txtPortKeyReleased
 
     /**
@@ -215,6 +218,14 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JTextField txtReturnedIP;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * 
+     * @param port do tipo String
+     * @return _port do tipo int mediante validação.
+     * A validação se dá através de Regex.
+     * este método também atualiza o campo txtPort com a informação invalid
+     * conforme a necessidade
+     */
     private int portValidate(String port){    
         int _port = 0;
         if (port.matches("^[0-9]+$")) {
@@ -225,16 +236,12 @@ public class Window extends javax.swing.JFrame {
             txtPort.requestFocus();
         }
         return _port;
-        
-//        if (StringUtils.isNumeric(port)) {
-//            return Integer.parseInt(port);
-//        }
-//        else {
-//            txtPort.setText("invalid!");
-//            return 0;
-//        }
     }
-    
+    /**
+     * Este método instancia o objeto AddressHandle que por sua vez
+     * cuida de validar e traduzir o host e também verifica se a porta
+     * está aberta ou fechada. 
+     */
     private void runCheckPort() {
         jButton1.setText("Checking...");
         jButton1.setEnabled(false);

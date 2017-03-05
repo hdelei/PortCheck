@@ -20,11 +20,18 @@ public class AddressHandle {
     private int _port;
     private final int timeout = 200; //milisseconds
     private boolean isValidIP = true;
-    
+    /**
+     * 
+     * @return isValidIP do tipo Boolean caso o IP seja de formato válido.
+     * A validação é executada pelo método portIsOpen().
+     */
     public boolean IsValidIP(){
         return isValidIP;
     }
-    
+    /**
+     * 
+     * @return _ip do tipo String caso não seja um objeto nulo
+     */
     public String getIP(){
         if (_ip == null) {
             return "";
@@ -34,12 +41,25 @@ public class AddressHandle {
         }
     }       
     
-
+    /**
+     * 
+     * @param ip do tipo String
+     * @param port do tipo int
+     * Parametros que serão exigidos para a inicialização do construtor
+     * 
+     */
     public AddressHandle(String ip, int port) {
         _ip = ip;
         _port = port;        
     }
-    
+    /**
+     * 
+     * @return isOpen do tipo boolean
+     * Este método instancia o objeto Socket com IP e Porta
+     * e faz a checagem. O timeout da checagem é de 200 milissegundos
+     * e poderá ser alterado na propriedade da classe caso necesário.
+     * No caso de uma exceção por IP nulo, modifica isvalidIP para false
+     */
     public boolean portIsOpen() {
         boolean isOpen = false;
         hostToIP();
@@ -55,11 +75,18 @@ public class AddressHandle {
         }
         else{
             isValidIP = false;
-        }
+        }        
         return isOpen;
     }
     
-    
+    /**
+     * este método tem a função de traduzir o host para o formato
+     * numérico. Exemplo: 192.168.1.1
+     * Se o IP já está no formato numérico correto, apenas modifica
+     * o campo _ip, caso não seja possível traduzir ou localizar
+     * o endereço, faz com que _ip seja nulo - o que lançará uma 
+     * excessão no método portIsOpen invalidando o IP.
+     */
     private void hostToIP(){
         try {
             InetAddress address; 
