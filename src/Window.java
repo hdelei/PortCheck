@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 
 
@@ -132,6 +133,11 @@ public class Window extends javax.swing.JFrame {
         });
 
         lblAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/about.png"))); // NOI18N
+        lblAbout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAboutMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -235,6 +241,12 @@ public class Window extends javax.swing.JFrame {
         txtIP.requestFocus();
     }//GEN-LAST:event_lblClearMouseClicked
 
+    private void lblAboutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAboutMouseClicked
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "created by Hdelei \n" +
+                "sugestions: hdelei@gmail.com");
+    }//GEN-LAST:event_lblAboutMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -315,21 +327,43 @@ public class Window extends javax.swing.JFrame {
         String ip = txtIP.getText();
         int port = portValidate(txtPort.getText());        
         
-        boolean portIsOpen, isValidIP;
+        boolean portIsOpen;
         
         AddressHandle myCheck = new AddressHandle(ip, port);
         portIsOpen = myCheck.portIsOpen();
-        isValidIP = myCheck.IsValidIP();
+        //isValidIP = myCheck.IsValidIP();
         
-        if(portIsOpen){
-            jLabel1.setText("Port "+ port +" is open");            
-        }
-        else if(!portIsOpen && !isValidIP){
-            jLabel1.setText("Invalid address or port");
+        if (!myCheck.getIP().equals("")) {
+            if (portIsOpen) {
+                jLabel1.setText("Port "+ port +" is open");
+            }
+            else{
+                jLabel1.setText("Port " + port +  " is closed");
+            }
         }
         else{
-            jLabel1.setText("Port " + port +  " is closed");
+            jLabel1.setText("Invalid Address!");
+            //System.out.println(isValidIP);
         }
+        
+         
+        
+//        if(portIsOpen){
+//            jLabel1.setText("Port "+ port +" is open");            
+//        }
+////        else if(!portIsOpen && !isValidIP){
+////            jLabel1.setText("Invalid address!");
+////        }
+//        else{
+//            
+//            if (isValidIP) {
+//                jLabel1.setText("Port " + port +  " is closed");
+//            }
+//            else{
+//                jLabel1.setText("Invalid Address!");
+//            }
+//            
+//        }
         
         txtReturnedIP.setText(myCheck.getIP());
         jButton1.setText("Check");

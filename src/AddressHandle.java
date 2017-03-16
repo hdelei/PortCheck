@@ -19,15 +19,17 @@ public class AddressHandle {
     private String _ip;
     private int _port;
     private final int timeout = 200; //milisseconds
-    private boolean isValidIP = true;
+    //private boolean isValidIP = true;
+    
     /**
      * 
      * @return isValidIP do tipo Boolean caso o IP seja de formato válido.
      * A validação é executada pelo método portIsOpen().
      */
-    public boolean IsValidIP(){
-        return isValidIP;
-    }
+//    public boolean IsValidIP(){
+//        System.out.println("Retornando: " + isValidIP);
+//        return isValidIP;
+//    }
     /**
      * 
      * @return _ip do tipo String caso não seja um objeto nulo
@@ -73,9 +75,7 @@ public class AddressHandle {
                 isOpen = false;
             }
         }
-        else{
-            isValidIP = false;
-        }        
+                
         return isOpen;
     }
     
@@ -95,8 +95,5 @@ public class AddressHandle {
         } catch (UnknownHostException ex) {
             _ip = null;
         }        
-    }
-    
-    
-    
+    }    
 }
